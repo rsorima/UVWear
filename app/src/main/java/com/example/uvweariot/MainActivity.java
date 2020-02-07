@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
 
+    //<editor-fold desc="Fragment Menu (Bottom Navigation)">
     private BottomNavigationView.OnNavigationItemSelectedListener navListener =
             new BottomNavigationView.OnNavigationItemSelectedListener() {
                 @Override
@@ -33,10 +34,10 @@ public class MainActivity extends AppCompatActivity {
                             selectedFragment = new HomeFragment();
                             break;
                         case R.id.nav_sun:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = new SunFragment();
                             break;
                         case R.id.nav_heart:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = new HeartFragment();
                             break;
                         case R.id.nav_info:
                             selectedFragment = new HomeFragment();
@@ -44,9 +45,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                             selectedFragment).commit();
-
                     return true;
                 }
-
             };
+    //</editor-fold>
 }
