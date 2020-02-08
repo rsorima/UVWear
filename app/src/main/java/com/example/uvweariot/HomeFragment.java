@@ -1,6 +1,11 @@
 package com.example.uvweariot;
 
+import android.Manifest;
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,14 +24,17 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.concurrent.Executor;
 
-public class HomeFragment extends Fragment{
+public class HomeFragment extends Fragment implements LocationListener {
     @Nullable
     private FusedLocationProviderClient fusedLocationProviderClient;
 
+    protected LocationManager locationManager;
+    protected LocationListener locationListener;
+    View curView;
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        View curView = inflater.inflate(R.layout.fragment_home, container, false); //View Creation
+        curView = inflater.inflate(R.layout.fragment_home, container, false); //View Creation
 
         //region Getting the date
         Calendar calendar = Calendar.getInstance();
@@ -35,17 +43,29 @@ public class HomeFragment extends Fragment{
         String stringDate = dateFormat.format(calendar.getTime());
         dateText.setText(stringDate);
         //endregion
-        final TextView locationText = curView.findViewById(R.id.LocationView);
-        fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getActivity());
-        fusedLocationProviderClient.getLastLocation().addOnSuccessListener(getActivity(), new OnSuccessListener<Location>() {
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null){
-                    locationText.setText("Location Acquired");
-                }
-            }
-        });
-
+ //       locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+//        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
         return curView;
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        final TextView locationText = curView.findViewById(R.id.LocationView);
+        locationText.setText("Latitude: " + location.getLatitude());
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
