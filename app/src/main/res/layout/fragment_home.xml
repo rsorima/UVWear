@@ -19,6 +19,7 @@
             android:id="@+id/Recommendation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="30dp"
             android:paddingBottom="16dp"
             android:gravity="center"
             android:text="Sample Recommendation"
@@ -34,17 +35,60 @@
             android:text="Today's Date"
             android:textSize="16sp" />
 
-        <ImageView
-            android:id="@+id/imageView"
-            android:layout_width="match_parent"
-            android:paddingBottom="28dp"
-            android:layout_height="389dp"
-            app:srcCompat="@drawable/elipse" />
+        <LinearLayout
+            android:layout_width="374dp"
+            android:layout_height="374dp"
+            android:background="@drawable/elipse"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="UVA"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="24sp"
+                android:textStyle="normal" />
+
+            <TextView
+                android:id="@+id/textView6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="8.8%"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UVB"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="24sp" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="9.9%"
+                android:textAlignment="center"
+                android:textColor="#ffffff"
+                android:textSize="36sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/LocationView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:textAlignment="center"
             android:gravity="center"
             android:text="Current location"
             android:textSize="16sp" />
