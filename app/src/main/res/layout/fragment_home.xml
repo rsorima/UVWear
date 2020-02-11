@@ -41,6 +41,12 @@
             android:layout_height="389dp"
             app:srcCompat="@drawable/elipse" />
 -->
+        <LinearLayout
+            android:layout_width="340dp"
+            android:layout_height="340dp"
+            android:background="@drawable/elipse"
+            android:orientation="vertical"></LinearLayout>
+
         <TextView
             android:id="@+id/LocationView"
             android:layout_width="match_parent"
