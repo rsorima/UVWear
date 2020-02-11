@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="top"
             android:gravity="center"
-            android:paddingTop="30dp"
+            android:paddingTop="40dp"
             android:paddingBottom="16dp"
             android:text="Index level"
             android:textSize="30sp"
@@ -42,19 +42,32 @@
             android:layout_height="374dp"
             app:srcCompat="@drawable/Pie" />
 -->
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="340dp"
-            android:layout_height="340dp"
-            android:background="@drawable/pie" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="378dp"
+            android:background="@drawable/pie"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="UV Index no."
+                android:textAlignment="center"
+                android:textSize="24sp"
+                android:textStyle="bold" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:text="Learn more about UVI"
+            android:paddingTop="16dp"
+            android:textColor="#0000EE"
+            android:text="Learn more about UV Index"
             android:textAlignment="center"
+            android:textColorLink="@color/design_default_color_primary_dark"
             android:textSize="16sp" />
 
 
