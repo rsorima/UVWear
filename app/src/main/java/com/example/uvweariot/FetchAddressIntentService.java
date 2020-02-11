@@ -16,6 +16,8 @@ public class FetchAddressIntentService extends IntentService {
     @Override
     protected void onHandleIntent(@Nullable Intent intent) {
         Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+
+
     }
     public final class Constants {
         public static final int SUCCESS_RESULT = 0;

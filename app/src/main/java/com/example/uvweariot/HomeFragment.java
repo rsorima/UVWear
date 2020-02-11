@@ -2,8 +2,11 @@ package com.example.uvweariot;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -22,10 +25,13 @@ import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.io.IOException;
 import java.security.Permission;
 import java.security.Permissions;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Executor;
 
 public class HomeFragment extends Fragment implements LocationListener {
@@ -34,6 +40,7 @@ public class HomeFragment extends Fragment implements LocationListener {
     private static final int REQUEST_LOCATION = 123;
     protected LocationManager locationManager;
     View curView;
+    TextView locationText;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -56,6 +63,8 @@ public class HomeFragment extends Fragment implements LocationListener {
                     Manifest.permission.ACCESS_COARSE_LOCATION,
                     Manifest.permission.BLUETOOTH,
                     Manifest.permission.BLUETOOTH_ADMIN}, REQUEST_LOCATION);
+            locationText = curView.findViewById(R.id.LocationView);
+            locationText.setText("Waiting for location...");
         };
         //endregion
 
@@ -63,16 +72,25 @@ public class HomeFragment extends Fragment implements LocationListener {
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         String provider = locationManager.getBestProvider(criteria, true);
-        Location location = locationManager.getLastKnownLocation(provider);
-        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
+        locationManager.requestLocationUpdates(provider, 0, 0, (LocationListener) this);
 
         return curView;
     }
 
     @Override
     public void onLocationChanged(Location location) {
-        final TextView locationText = curView.findViewById(R.id.LocationView);
-        locationText.setText("Latitude: " + location.getLatitude());
+        Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
+        String fullAddress ="";
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+
+            String address = addresses.get(0).getAddressLine(0);
+            fullAddress = address;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        locationText = curView.findViewById(R.id.LocationView);
+        locationText.setText(fullAddress);
     }
 
     @Override
