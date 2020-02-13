@@ -56,4 +56,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             };
     //</editor-fold>
+
+    @Override
+    public void onAttachFragment(@NonNull Fragment fragment) {
+        super.onAttachFragment(fragment);
+    }
 }

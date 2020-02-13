@@ -1,6 +1,7 @@
 package com.example.uvweariot;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -36,12 +37,11 @@ import java.util.concurrent.Executor;
 
 public class HomeFragment extends Fragment implements LocationListener {
     @Nullable
-    private FusedLocationProviderClient fusedLocationProviderClient;
+
     private static final int REQUEST_LOCATION = 123;
     protected LocationManager locationManager;
     View curView;
     TextView locationText;
-
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
@@ -72,8 +72,8 @@ public class HomeFragment extends Fragment implements LocationListener {
         Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
         String provider = locationManager.getBestProvider(criteria, true);
-        locationManager.requestLocationUpdates(provider, 0, 0, (LocationListener) this);
-
+        locationManager.getLastKnownLocation(provider);
+        locationManager.requestLocationUpdates(provider, 0, 5, (LocationListener) this);
         return curView;
     }
 

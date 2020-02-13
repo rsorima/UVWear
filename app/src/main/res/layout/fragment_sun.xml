@@ -45,7 +45,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="378dp"
-            android:background="@drawable/pie"
+            android:background="@drawable/ic_neliel_background"
             android:gravity="center"
             android:orientation="vertical">
 
