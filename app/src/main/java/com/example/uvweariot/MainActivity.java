@@ -9,13 +9,29 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Criteria;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
+
+public class MainActivity extends AppCompatActivity implements LocationListener {
+
+    private String fullAddress;
+    protected LocationManager locationManager;
+    Fragment homeFragment = new HomeFragment();
+    Fragment heartFragment = new HeartFragment();
+    Fragment sunFragment = new SunFragment();
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -23,8 +39,30 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        //region Request Permissions
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M){
+        if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED ||
+                checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN},123);
+
+        }}
+        //endregion
+
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        Criteria criteria = new Criteria();
+        criteria.setAccuracy(Criteria.ACCURACY_FINE);
+        String provider = locationManager.getBestProvider(criteria, true);
+        locationManager.getLastKnownLocation(provider);
+        locationManager.requestLocationUpdates(provider, 0, 5, (LocationListener) this);
+        Bundle bundle = new Bundle();
+        bundle.putString("fullAddress",fullAddress);
+        homeFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                new HomeFragment()).commit();
+                homeFragment).commit();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
         bottomNav.setOnNavigationItemSelectedListener(navListener);
     }
@@ -38,16 +76,16 @@ public class MainActivity extends AppCompatActivity {
 
                     switch (menuItem.getItemId()){
                         case R.id.nav_home:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = homeFragment;
                             break;
                         case R.id.nav_sun:
-                            selectedFragment = new SunFragment();
+                            selectedFragment = sunFragment;
                             break;
                         case R.id.nav_heart:
-                            selectedFragment = new HeartFragment();
+                            selectedFragment = heartFragment;
                             break;
                         case R.id.nav_info:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = homeFragment;
                             break;
                     }
                     getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
@@ -61,4 +99,34 @@ public class MainActivity extends AppCompatActivity {
     public void onAttachFragment(@NonNull Fragment fragment) {
         super.onAttachFragment(fragment);
     }
+
+
+    //<editor-fold desc="Location Listener Override Methods">
+    @Override
+    public void onLocationChanged(Location location) {
+        Geocoder geocoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            String address = addresses.get(0).getAddressLine(0);
+            fullAddress = address;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+    //</editor-fold>
 }
