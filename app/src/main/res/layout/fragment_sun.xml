@@ -42,10 +42,12 @@
             android:layout_height="374dp"
             app:srcCompat="@drawable/Pie" />
 -->
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="378dp"
-            android:background="@drawable/ic_neliel_background"
+            android:layout_height="0dp"
+            android:layout_weight="2.5"
+            android:background="@mipmap/ic_new_uv_index_foreground"
             android:gravity="center"
             android:orientation="vertical">
 
@@ -53,9 +55,9 @@
                 android:id="@+id/textView5"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="UV Index no."
+                android:text="Index level"
                 android:textAlignment="center"
-                android:textSize="24sp"
+                android:textSize="16sp"
                 android:textStyle="bold" />
         </LinearLayout>
 
