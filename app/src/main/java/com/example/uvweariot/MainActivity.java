@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         locationManager.getLastKnownLocation(provider);
         locationManager.requestLocationUpdates(provider, 0, 5, (LocationListener) this);
         Bundle bundle = new Bundle();
-        bundle.putString("fullAddress",fullAddress);
+        bundle.putString("fullAddress","Sample locattion from activity.");
         homeFragment.setArguments(bundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 homeFragment).commit();
