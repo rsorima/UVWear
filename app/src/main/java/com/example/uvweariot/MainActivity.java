@@ -29,7 +29,13 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
     private String fullAddress;
     protected LocationManager locationManager;
+    private Criteria criteria = new Criteria();
+    String provider;
     Fragment homeFragment = new HomeFragment();
+    Bundle homeBundle = new Bundle();
+    Bundle heartBundle = new Bundle();
+    Bundle sunBundle = new Bundle();
+
     Fragment heartFragment = new HeartFragment();
     Fragment sunFragment = new SunFragment();
 
@@ -48,19 +54,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
                 checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
             requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN},123);
-
         }}
         //endregion
 
         locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-        Criteria criteria = new Criteria();
         criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        String provider = locationManager.getBestProvider(criteria, true);
+        provider = locationManager.getBestProvider(criteria, true);
         locationManager.getLastKnownLocation(provider);
-        locationManager.requestLocationUpdates(provider, 0, 5, (LocationListener) this);
-        Bundle bundle = new Bundle();
-        bundle.putString("fullAddress","Sample locattion from activity.");
-        homeFragment.setArguments(bundle);
+        locationManager.requestLocationUpdates(provider, 0, 0, this);
+        homeBundle.putString("fullAddress", fullAddress);
+        homeFragment.setArguments(homeBundle);
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
                 homeFragment).commit();
         BottomNavigationView bottomNav = findViewById(R.id.bottom_navigation);
@@ -76,6 +79,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
 
                     switch (menuItem.getItemId()){
                         case R.id.nav_home:
+                            homeBundle.putString("fullAddress", fullAddress);
+                            homeFragment.setArguments(homeBundle);
                             selectedFragment = homeFragment;
                             break;
                         case R.id.nav_sun:
