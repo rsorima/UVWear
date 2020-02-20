@@ -63,15 +63,19 @@ public class HomeFragment extends Fragment implements LocationListener{
             if (getActivity().checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 getActivity().checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED ||
                 getActivity().checkSelfPermission(Manifest.permission.BLUETOOTH) != PackageManager.PERMISSION_GRANTED ||
-                getActivity().checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED) {
+                getActivity().checkSelfPermission(Manifest.permission.BLUETOOTH_ADMIN) != PackageManager.PERMISSION_GRANTED ||
+                getActivity().checkSelfPermission(Manifest.permission.ACCESS_BACKGROUND_LOCATION) != PackageManager.PERMISSION_GRANTED ) {
                 requestPermissions(new String[]{Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION,
-                        Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN},123);
+                        Manifest.permission.BLUETOOTH, Manifest.permission.BLUETOOTH_ADMIN, Manifest.permission.ACCESS_BACKGROUND_LOCATION},123);
             }}
 
 
         locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-        criteria.setAccuracy(Criteria.ACCURACY_FINE);
-        provider = locationManager.getBestProvider(criteria, true);
+        provider = LocationManager.NETWORK_PROVIDER;
+        Location location = locationManager.getLastKnownLocation(provider);
+        if (location != null) {
+            onLocationChanged(location);
+        }
         locationManager.requestLocationUpdates(provider, 0, 0,  this);
         return curView;
     }
@@ -80,7 +84,7 @@ public class HomeFragment extends Fragment implements LocationListener{
     public void onLocationChanged(Location location) {
         Geocoder geocoder = new Geocoder(getActivity(), Locale.getDefault());
         @Nullable
-        String address = "";
+        String address ="";
         try {
             List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
              address = addresses.get(0).getAddressLine(0);
@@ -88,7 +92,9 @@ public class HomeFragment extends Fragment implements LocationListener{
             e.printStackTrace();
         }
         locationText = curView.findViewById(R.id.LocationView);
-        locationText.setText(address);
+        if (address == ""){
+            locationText.setText(address);
+        }
     }
 
     @Override
